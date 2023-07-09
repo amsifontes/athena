@@ -109,7 +109,7 @@ type BlockStatement struct {
 }
 
 func (bs *BlockStatement) statementNode() {}
-func (bs *BlockStatement) TOkenLiteral() string { return bs.Token.Literal}
+func (bs *BlockStatement) TokenLiteral() string { return bs.Token.Literal}
 func (bs *BlockStatement) String() string {
 	var out bytes.Buffer
 
@@ -137,7 +137,7 @@ type IntegerLiteral struct {
 }
 
 func (il *IntegerLiteral) expressionNode() {}
-func (il *IntegerLiteral) TOkenLiteral() string {return il.Token.Literal}
+func (il *IntegerLiteral) TokenLiteral() string {return il.Token.Literal}
 func (il *IntegerLiteral) String() string {return il.Token.Literal}
 
 type PrefixExpression struct {

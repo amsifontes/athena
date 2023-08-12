@@ -343,7 +343,7 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 
 		actual := program.String()
 		if actual != tt.expected {
-			t.Errorf("expected=%q, got=%q", tt.expect, actual)
+			t.Errorf("expected=%q, got=%q", tt.expected, actual)
 		}
 	}
 }
@@ -368,7 +368,7 @@ func TestBooleanExpression(t *testing.T) {
 			t.Fatalf("program does not have 1 statement. got=%d", len(program.Statements))
 		}
 
-		stmt, ok := program.Statement[0].(*ast.ExpressionStatement)
+		stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
 		if !ok {
 			t.Fatalf("program.Statements[0] is not ast.Expression. got=%T", program.Statements[0])
 		}
@@ -414,7 +414,7 @@ func TestIfExpression(t *testing.T) {
 		t.Errorf("Consequence is not 1 statement. got=%d", len(exp.Consequence.Statements))
 	}
 
-	consequence, ok := exp.Consequence.Statements[0].(*st.ExpressionStatement)
+	consequence, ok := exp.Consequence.Statements[0].(*ast.ExpressionStatement)
 	if !ok {
 		t.Fatalf("Statements[0] is not ast.ExpressionStatement. got=%T", exp.Consequence.Statements[0])
 	}
@@ -423,10 +423,15 @@ func TestIfExpression(t *testing.T) {
 		return
 	}
 
-	if exp.Alternative != nill {
+	if exp.Alternative != nil {
 		t.Errorf("exp.Alternative.Statements was not nil. got=%v", exp.Alternative)
 	}
 }
+
+
+// func TestIfElseExpression(t *testing.T) {
+	
+// }
 
 
 

@@ -66,11 +66,19 @@ func New(l *lexer.Lexer) *Parser {
 
 
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
-	// TODO: register infixes...
+	p.registerInfix(token.PLUS, p.parseInfixExpression)
+	p.registerInfix(token.MINUS, p.parseInfixExpression)
+	p.registerInfix(token.SLASH, p.parseInfixExpression)
+	p.registerInfix(token.ASTERISK, p.parseInfixExpression)
+	p.registerInfix(token.EQ, p.parseInfixExpression)
+	p.registerInfix(token.NOT_EQ, p.parseInfixExpression)
+	p.registerInfix(token.LT, p.parseInfixExpression)
+	p.registerInfix(token.GT, p.parseInfixExpression)
+	p.registerInfix(token.LPAREN, p.parseCallExpression)
 
 	// read in two tokens to set curToken and peekToken
-	// p.nextToken()
-	// p.nextToken()
+	p.nextToken()
+	p.nextToken()
 
 	return p
 }
@@ -127,6 +135,18 @@ func(p *Parser) parsePrefixExpression() ast.Expression {
 	}
 	p.nextToken()
 	expression.Right = p.parseExpression(PREFIX)
+	return expression
+}
+
+func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
+	expression := &ast.InfixExpression{
+		Token: p.curToken,
+		Operator: p.curToken.Literal,
+		Left: left,
+	}
+	precedence := p.curPrecedence()
+	p.nextToken()
+	expression.Right = p.parseExpression(precedence)
 	return expression
 }
 
@@ -199,9 +219,9 @@ func (p *Parser) parseFunctionLiteral() ast.Expression {
 //// Next/Bookmark: func (p *Parser) parseFunctionParameters() []*ast.Identifier
 
 
-// func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
-// 	p.infixParseFns[tokenType] = fn
-// }
+func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
+	p.infixParseFns[tokenType] = fn
+}
 
 func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}

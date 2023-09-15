@@ -128,7 +128,7 @@ func (p *Parser) parseIdentifier() ast.Expression {
 	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 }
 
-func(p *Parser) parsePrefixExpression() ast.Expression {
+func (p *Parser) parsePrefixExpression() ast.Expression {
 	expression := &ast.PrefixExpression{
 		Token: p.curToken,
 		Operator: p.curToken.Literal,
